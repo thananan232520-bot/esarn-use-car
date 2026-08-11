@@ -9,24 +9,33 @@
         header { background: #222; color: #fff; padding: 20px; text-align: center; }
         #clock { font-size: 14px; margin-top: 10px; color: #aaa; }
         
+        .animated-banner { max-width: 800px; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: pulse-glow 2s infinite alternate; transition: transform 0.3s ease; }
+        .animated-banner:hover { transform: scale(1.02); }
+        .animated-banner img { width: 100%; height: auto; display: block; }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(34, 139, 34, 0.8); }
+        }
+
         .container { display: flex; flex-wrap: wrap; padding: 10px; justify-content: center; max-width: 1200px; margin: 0 auto; }
-        .card { background: #fff; border: 1px solid #ddd; margin: 10px; padding: 15px; width: 300px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        .card { background: #fff; border: 1px solid #ddd; margin: 10px; padding: 15px; width: 320px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
         
-        /* สไตล์ของแบนเนอร์ที่ถูกแทรก */
+        .image-gallery { display: flex; overflow-x: auto; gap: 5px; margin-bottom: 10px; padding-bottom: 5px; }
+        .image-gallery img { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
+        
         .dynamic-banner { width: 100%; text-align: center; margin: 15px 10px; background: #fff; border: 1px solid #e0e0e0; padding: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
         .dynamic-banner img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
         .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; }
         
-        .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
-        input[type="text"], input[type="number"], select { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; }
+        .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
+        input[type="text"], input[type="number"], select, input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
         button:hover { background: #218838; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
         .legal-text { font-size: 12px; color: #555; background: #f9f9f9; padding: 10px; margin: 10px 0; border: 1px solid #eee; }
         .checkbox-container { display: flex; align-items: flex-start; margin-top: 10px; font-size: 13px; }
         .checkbox-container input { margin-right: 10px; margin-top: 2px; }
         footer { background: #222; color: #ccc; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px; }
-        .contact-info { margin-bottom: 15px; }
-        .contact-info span { display: inline-block; margin: 0 10px; }
     </style>
 </head>
 <body>
@@ -35,7 +44,12 @@
         <div id="clock">กำลังโหลดเวลา...</div>
     </header>
 
-    <!-- ฟอร์มลงประกาศ -->
+    <div class="animated-banner" id="banner-top">
+        <a href="https://line.me/ti/p/~0980291997" target="_blank">
+            <img src="cover-banner.jpg" alt="ซื้อขายรถมือสองครบวงจร รับประเมินราคาฟรี">
+        </a>
+    </div>
+
     <div class="form-container">
         <h3>ลงประกาศขายฟรี</h3>
         <form id="postForm">
@@ -47,6 +61,10 @@
             <input type="text" id="title" placeholder="ยี่ห้อ / รุ่น / ปี (เช่น Honda Civic 1.8 EL ปี 2019)" required>
             <input type="number" id="price" placeholder="ราคา (บาท)" required>
             <input type="text" id="contact" placeholder="เบอร์โทรศัพท์สำหรับติดต่อ" required>
+            
+            <label style="font-size: 14px; margin-top: 10px; display: block; font-weight: bold;">อัปโหลดรูปรถยนต์ (สูงสุด 20 รูป)</label>
+            <input type="file" id="images" accept="image/*" multiple>
+            <div style="font-size: 11px; color: #dc3545;">* แนะนำให้อัปโหลดเฉพาะรูปที่จำเป็นเพื่อความรวดเร็วในการบันทึกข้อมูล</div>
             
             <div class="legal-text">
                 ข้อตกลง: เว็บไซต์เป็นเพียงสื่อกลาง ไม่มีส่วนเกี่ยวข้องกับการทำธุรกรรม โปรดใช้ความระมัดระวัง
@@ -61,71 +79,47 @@
         </form>
     </div>
 
-    <!-- พื้นที่แสดงรายการรถยนต์และแบนเนอร์ที่ถูกแทรก -->
     <div class="container" id="listings">
         <p style="text-align: center; width: 100%;">กำลังโหลดข้อมูลประกาศ...</p>
     </div>
 
-    <!-- พื้นที่แสดงปุ่มแบ่งหน้า -->
     <div id="pagination" style="text-align: center; margin: 20px auto; width: 100%;"></div>
 
     <footer>
-        <div class="contact-info">
+        <div style="margin-bottom: 15px;">
             <strong>ติดต่อสอบถาม / เช่าพื้นที่โฆษณา</strong><br>
-            <span>โทร: 0980291997</span> | 
-            <span>Line ID: 0980291997</span> | 
-            <span>อีเมล: thananan232520@gmail.com</span>
+            โทร: 0980291997 | Line ID: 0980291997 | อีเมล: thananan232520@gmail.com
         </div>
-        <div class="stats" style="margin-top: 15px;">
+        <div>
             สถิติผู้เข้าชมเว็บไซต์:<br>
-            <img src="https://api.visitorbadge.io/api/visitors?path=ลิงก์เว็บไซต์ของพ่อมู๋&countColor=%2328a745" alt="สถิติผู้เข้าชม">
+            <img src="https://api.visitorbadge.io/api/visitors?path=thananan232520.github.io&countColor=%2328a745" alt="สถิติผู้เข้าชม">
         </div>
     </footer>
 
     <script>
-        // --- ส่วนที่ 1: ตั้งค่า URL และฐานข้อมูลสปอนเซอร์ 20 แบนเนอร์ ---
-        // วาง Web App URL จาก Google Apps Script ตรงนี้
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzDBBG7b9AVZSnGECT7EV17nh9jo3STDH84PKb0IpI8JCH9EMvI1v0sBJKOOkm6WeEmvg/exec'
+        // ใส่ URL ที่ได้จาก Google Apps Script อันใหม่ตรงนี้
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwoZZ0loPXb6lzzuDfaRlJB-2daZlxz4SMXeKMV8d390pvozQ8ZijxZ4Dw4O4zScXjchQ/exec';
         
-        // ฐานข้อมูลสปอนเซอร์ทั้ง 20 แบนเนอร์ (พ่อมู๋สามารถมาแก้ลิงก์รูปและลิงก์เว็บตรงนี้ได้เลย)
+        // ชุดข้อมูลแบนเนอร์ มีการแทรก cover-banner.jpg ไว้ในตำแหน่งแรกของ Array
         const sponsorBanners = [
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+1", link: "#" },
+            { img: "cover-banner.jpg", link: "https://line.me/ti/p/~0980291997" },
             { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+2", link: "#" },
             { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+3", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+4", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+5", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+6", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+7", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+8", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+9", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+10", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+11", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+12", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+13", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+14", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+15", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+16", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+17", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+18", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+19", link: "#" },
-            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+20", link: "#" }
+            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+4", link: "#" }
         ];
 
-        // --- ส่วนที่ 2: ระบบนาฬิกา ---
         function updateClock() {
             const clockElement = document.getElementById('clock');
             if (clockElement) {
                 clockElement.innerText = "เวลาปัจจุบัน: " + new Date().toLocaleDateString('th-TH', {
-                    timeZone: 'Asia/Bangkok', year: 'numeric', month: 'long', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                    timeZone: 'Asia/Bangkok', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
                 });
             }
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // --- ส่วนที่ 3: ระบบดึงข้อมูล แบ่งหน้า และแทรกแบนเนอร์ ---
         let allListings = [];
-        const itemsPerPage = 10; // จำนวนประกาศต่อหน้า
+        const itemsPerPage = 10;
         let currentPage = 1;
 
         function loadListings() {
@@ -138,7 +132,7 @@
                     }
                 })
                 .catch(error => {
-                    document.getElementById('listings').innerHTML = '<p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                    document.getElementById('listings').innerHTML = '<p style="color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาตรวจสอบ URL หรือสิทธิ์การเข้าถึง Apps Script</p>';
                 });
         }
 
@@ -156,28 +150,36 @@
                 return;
             }
 
-            // นำเสนอข้อมูลสลับกับแบนเนอร์
             pageItems.forEach((item, index) => {
-                // สร้างการ์ดรถยนต์
                 const dateObj = new Date(item.date);
                 const dateStr = dateObj.toLocaleDateString('th-TH');
+                
+                // ประมวลผลรูปภาพเพื่อแสดงเป็นแกลเลอรี
+                let imgHtml = '';
+                if(item.images) {
+                    const urls = item.images.split(',');
+                    urls.forEach(url => {
+                        if(url.trim() !== '') {
+                            imgHtml += `<a href="${url}" target="_blank"><img src="${url}" alt="รถมือสอง"></a>`;
+                        }
+                    });
+                }
+                const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
+
                 const card = `
                     <div class="card">
-                        <h3>${item.title}</h3>
-                        <p>ประเภท: ${item.type}</p>
-                        <p>ราคา: ${Number(item.price).toLocaleString()} บาท</p>
-                        <p>ติดต่อ: ${item.contact}</p>
-                        <p style="font-size: 11px; color: #888; margin-top: 10px;">ลงประกาศเมื่อ: ${dateStr}</p>
+                        ${galleryHtml}
+                        <h3 style="margin-top: 0;">${item.title}</h3>
+                        <p style="margin: 5px 0;"><strong>ประเภท:</strong> ${item.type}</p>
+                        <p style="margin: 5px 0; color: #28a745; font-weight: bold; font-size: 18px;">฿${Number(item.price).toLocaleString()}</p>
+                        <p style="margin: 5px 0;"><strong>ติดต่อ:</strong> ${item.contact}</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 15px; border-top: 1px solid #eee; padding-top: 5px;">ลงประกาศเมื่อ: ${dateStr}</p>
                     </div>
                 `;
                 listingsDiv.innerHTML += card;
 
-                // คำนวณเพื่อแทรกแบนเนอร์ 2 ป้ายต่อ 1 ประกาศ (เพื่อให้ครบ 20 ป้ายใน 1 หน้า)
-                for(let b = 0; b < 2; b++) {
-                    // คำนวณหาลำดับแบนเนอร์ที่จะนำมาแสดงให้วนลูปไปเรื่อยๆ
-                    let bannerIndex = ((page - 1) * itemsPerPage * 2) + (index * 2) + b;
-                    bannerIndex = bannerIndex % sponsorBanners.length;
-                    
+                let bannerIndex = ((page - 1) * itemsPerPage) + index;
+                if(bannerIndex < sponsorBanners.length) {
                     const banner = sponsorBanners[bannerIndex];
                     const bannerHtml = `
                         <div class="dynamic-banner">
@@ -211,37 +213,61 @@
             }
         }
 
-        // --- ส่วนที่ 4: ระบบฟอร์มส่งข้อมูล ---
-        document.getElementById('postForm').addEventListener('submit', function(e) {
+        document.getElementById('postForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!document.getElementById('pdpa').checked) {
                 alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัว'); return;
             }
+
             const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.innerText = 'กำลังบันทึกข้อมูล...'; submitBtn.disabled = true;
+            const fileInput = document.getElementById('images');
+            const files = fileInput.files;
+
+            if (files.length > 20) {
+                alert('อัปโหลดรูปภาพได้สูงสุด 20 รูปเท่านั้นครับ');
+                return;
+            }
+
+            submitBtn.innerText = 'กำลังประมวลผลและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
+            submitBtn.disabled = true;
+
+            let imageArray = [];
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+                        reader.readAsDataURL(file);
+                    });
+                    imageArray.push({ name: file.name, type: file.type, base64: base64 });
+                }
+            }
 
             const formData = {
                 type: document.getElementById('type').value,
                 title: document.getElementById('title').value,
                 price: document.getElementById('price').value,
-                contact: document.getElementById('contact').value
+                contact: document.getElementById('contact').value,
+                images: imageArray
             };
 
             fetch(scriptUrl, {
                 method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             }).then(() => {
-                alert('ลงประกาศเรียบร้อยแล้วครับ');
+                alert('ลงประกาศพร้อมรูปภาพเรียบร้อยแล้วครับ');
                 document.getElementById('postForm').reset();
-                submitBtn.innerText = 'ลงประกาศทันที'; submitBtn.disabled = false;
+                submitBtn.innerText = 'ลงประกาศทันที'; 
+                submitBtn.disabled = false;
                 loadListings();
             }).catch(error => {
-                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-                submitBtn.innerText = 'ลงประกาศทันที'; submitBtn.disabled = false;
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+                submitBtn.innerText = 'ลงประกาศทันที'; 
+                submitBtn.disabled = false;
             });
         });
 
-        // โหลดข้อมูลเมื่อเปิดเว็บ
         window.onload = loadListings;
     </script>
 </body>
