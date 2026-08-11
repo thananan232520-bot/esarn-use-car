@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เว็บประกาศขายรถยนต์และมอเตอร์ไซค์มือสอง</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+        header { background: #222; color: #fff; padding: 20px; text-align: center; }
+        #clock { font-size: 14px; margin-top: 10px; color: #aaa; }
+        .sponsor-banner { background: #ffcc00; text-align: center; padding: 20px; margin: 15px auto; max-width: 800px; border: 1px solid #ccc; cursor: pointer; }
+        .container { display: flex; flex-wrap: wrap; padding: 10px; justify-content: center; max-width: 1200px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid #ddd; margin: 10px; padding: 15px; width: 300px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        input[type="text"], input[type="number"], select { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; }
+        button:hover { background: #218838; }
+        .legal-text { font-size: 12px; color: #555; background: #f9f9f9; padding: 10px; margin: 10px 0; border: 1px solid #eee; }
+        .checkbox-container { display: flex; align-items: flex-start; margin-top: 10px; font-size: 13px; }
+        .checkbox-container input { margin-right: 10px; margin-top: 2px; }
+        footer { background: #222; color: #ccc; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px; }
+        .contact-info { margin-bottom: 15px; }
+        .contact-info span { display: inline-block; margin: 0 10px; }
+        .stats { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ศูนย์รวมรถมือสอง ซื้อง่ายขายคล่อง</h1>
+        <div id="clock">กำลังโหลดเวลา...</div>
+    </header>
+
+    <div class="sponsor-banner" onclick="alert('สนใจลงโฆษณา ติดต่อตามรายละเอียดด้านล่างเว็บไซต์ครับ')">
+        <h3>พื้นที่โฆษณาตำแหน่ง VIP</h3>
+        <p>เพิ่มยอดขายและสร้างการรับรู้ให้แบรนด์ของคุณที่นี่</p>
+    </div>
+
+    <div class="form-container">
+        <h3>ลงประกาศขายฟรี</h3>
+        <form id="postForm">
+            <select id="type" required>
+                <option value="" disabled selected>เลือกประเภท</option>
+                <option value="รถยนต์">รถยนต์</option>
+                <option value="มอเตอร์ไซค์">มอเตอร์ไซค์</option>
+            </select>
+            <input type="text" id="title" placeholder="ยี่ห้อ / รุ่น / ปี (เช่น Honda Civic 1.8 EL ปี 2019)" required>
+            <input type="number" id="price" placeholder="ราคา (บาท)" required>
+            <input type="text" id="contact" placeholder="เบอร์โทรศัพท์สำหรับติดต่อ" required>
+            
+            <div class="legal-text">
+                <strong>ข้อตกลงการใช้งานและนโยบายความเป็นส่วนตัว:</strong><br>
+                เว็บไซต์นี้เป็นเพียงสื่อกลางในการแสดงข้อมูลประกาศรับซื้อ-ขายสินค้าเท่านั้น ทางเว็บไซต์ไม่มีส่วนเกี่ยวข้องกับการทำธุรกรรม การรับประกันสินค้า หรือความเสียหายใดๆ ที่เกิดขึ้นจากการซื้อขาย ผู้ใช้งานต้องใช้ความระมัดระวังในการตรวจสอบข้อมูลด้วยตนเอง ข้อมูลเบอร์โทรศัพท์ที่คุณระบุจะถูกแสดงต่อสาธารณะเพื่อประโยชน์ในการติดต่อซื้อขาย
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="pdpa" required>
+                <label for="pdpa">ข้าพเจ้าได้อ่านและยอมรับข้อตกลงการใช้งาน รวมถึงยินยอมให้เว็บไซต์เปิดเผยข้อมูลติดต่อต่อสาธารณะตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)</label>
+            </div>
+
+            <button type="submit">ลงประกาศทันที</button>
+        </form>
+    </div>
+
+    <div class="container" id="listings">
+        <!-- ตัวอย่างข้อมูล สำหรับทดสอบการแสดงผล -->
+        <div class="card">
+            <h3>Honda Civic 1.8 EL ปี 2019</h3>
+            <p>ประเภท: รถยนต์</p>
+            <p>ราคา: 550,000 บาท</p>
+            <p>ติดต่อ: 081-xxx-xxxx</p>
+            <button style="background: #dc3545; padding: 5px; font-size: 12px;" onclick="alert('ขอบคุณที่แจ้งข้อมูล ทีมงานจะตรวจสอบโดยเร็วที่สุด')">รายงานความไม่เหมาะสม</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="contact-info">
+            <strong>ติดต่อสอบถาม / เช่าพื้นที่โฆษณา</strong><br>
+            <span>โทร: 0980291997</span> | 
+            <span>Line ID: 0980291997</span> | 
+            <span>อีเมล: thananan232520@gmail.com</span>
+        </div>
+        <div class="stats">
+            สถิติผู้เข้าชมเว็บไซต์:<br>
+            <!-- ใช้ API นับคนเข้าเว็บฟรีของ seeyoufarm โดยอ้างอิงจาก URL ของหน้าเว็บ -->
+            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fyour-github-username.github.io%2Fyour-repo-name&count_bg=%2328A745&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" alt="สถิติผู้เข้าชม">
+        </div>
+        <div style="margin-top: 10px; font-size: 12px; color: #777;">
+            © 2026 สงวนลิขสิทธิ์
+        </div>
+    </footer>
+
+    <script>
+        // ระบบนาฬิกาเรียลไทม์
+        function updateClock() {
+            const now = new Date();
+            const options = { 
+                timeZone: 'Asia/Bangkok', 
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            };
+            document.getElementById('clock').innerText = "เวลาปัจจุบัน: " + now.toLocaleDateString('th-TH', options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ระบบส่งข้อมูลลง Google Sheets
+        const scriptUrl = https://script.google.com/macros/s/AKfycbzDBBG7b9AVZSnGECT7EV17nh9jo3STDH84PKb0IpI8JCH9EMvI1v0sBJKOOkm6WeEmvg/exec
+        
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('pdpa').checked) {
+                alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัวก่อนลงประกาศครับ');
+                return;
+            }
+
+            const data = {
+                type: document.getElementById('type').value,
+                title: document.getElementById('title').value,
+                price: document.getElementById('price').value,
+                contact: document.getElementById('contact').value
+            };
+            
+            // ปิดปุ่มกันกดซ้ำ
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerText = 'กำลังบันทึกข้อมูล...';
+            submitBtn.disabled = true;
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(() => {
+                alert('ลงประกาศเรียบร้อยแล้วครับ');
+                location.reload();
+            }).catch(error => {
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                submitBtn.innerText = 'ลงประกาศทันที';
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
