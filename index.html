@@ -90,56 +90,90 @@
     </footer>
 
     <script>
-        // ระบบนาฬิกาเรียลไทม์
-        function updateClock() {
-            const now = new Date();
-            const options = { 
-                timeZone: 'Asia/Bangkok', 
-                year: 'numeric', month: 'long', day: 'numeric',
+    // 1. ระบบนาฬิกาเรียลไทม์
+    function updateClock() {
+        const clockElement = document.getElementById('clock');
+        if (clockElement) {
+            clockElement.innerText = "เวลาปัจจุบัน: " + new Date().toLocaleDateString('th-TH', {
+                timeZone: 'Asia/Bangkok', year: 'numeric', month: 'long', day: 'numeric',
                 hour: '2-digit', minute: '2-digit', second: '2-digit'
-            };
-            document.getElementById('clock').innerText = "เวลาปัจจุบัน: " + now.toLocaleDateString('th-TH', options);
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // ระบบส่งข้อมูลลง Google Sheets
-        const scriptUrl = https://script.google.com/macros/s/AKfycbzDBBG7b9AVZSnGECT7EV17nh9jo3STDH84PKb0IpI8JCH9EMvI1v0sBJKOOkm6WeEmvg/exec
-        
-        document.getElementById('postForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!document.getElementById('pdpa').checked) {
-                alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัวก่อนลงประกาศครับ');
-                return;
-            }
-
-            const data = {
-                type: document.getElementById('type').value,
-                title: document.getElementById('title').value,
-                price: document.getElementById('price').value,
-                contact: document.getElementById('contact').value
-            };
-            
-            // ปิดปุ่มกันกดซ้ำ
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.innerText = 'กำลังบันทึกข้อมูล...';
-            submitBtn.disabled = true;
-
-            fetch(scriptUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(() => {
-                alert('ลงประกาศเรียบร้อยแล้วครับ');
-                location.reload();
-            }).catch(error => {
-                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-                submitBtn.innerText = 'ลงประกาศทันที';
-                submitBtn.disabled = false;
             });
+        }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // วาง URL จาก Google Apps Script ที่ช่องนี้
+    const scriptUrl = https://script.google.com/macros/s/AKfycbzDBBG7b9AVZSnGECT7EV17nh9jo3STDH84PKb0IpI8JCH9EMvI1v0sBJKOOkm6WeEmvg/exec
+    // 2. ระบบดึงข้อมูลประกาศมาแสดงผล
+    function loadListings() {
+        fetch(scriptUrl)
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    const listingsDiv = document.getElementById('listings');
+                    listingsDiv.innerHTML = ''; // ล้างข้อมูลตัวอย่างเดิมออก
+                    
+                    // นำข้อมูลจาก Sheets มาสร้างการ์ดแสดงผล
+                    data.data.reverse().forEach(item => {
+                        const dateObj = new Date(item.date);
+                        const dateStr = dateObj.toLocaleDateString('th-TH');
+                        const card = `
+                            <div class="card">
+                                <h3>${item.title}</h3>
+                                <p>ประเภท: ${item.type}</p>
+                                <p>ราคา: ${Number(item.price).toLocaleString()} บาท</p>
+                                <p>ติดต่อ: ${item.contact}</p>
+                                <p style="font-size: 11px; color: #888; margin-top: 10px;">ลงประกาศเมื่อ: ${dateStr}</p>
+                            </div>
+                        `;
+                        listingsDiv.innerHTML += card;
+                    });
+                }
+            })
+            .catch(error => console.error('ไม่สามารถดึงข้อมูลได้:', error));
+    }
+
+    // 3. ระบบส่งข้อมูลเมื่อกดลงประกาศ
+    document.getElementById('postForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!document.getElementById('pdpa').checked) {
+            alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัวก่อนลงประกาศครับ');
+            return;
+        }
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerText = 'กำลังบันทึกข้อมูล...';
+        submitBtn.disabled = true;
+
+        const formData = {
+            type: document.getElementById('type').value,
+            title: document.getElementById('title').value,
+            price: document.getElementById('price').value,
+            contact: document.getElementById('contact').value
+        };
+
+        fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        }).then(() => {
+            alert('ลงประกาศเรียบร้อยแล้วครับ');
+            document.getElementById('postForm').reset();
+            submitBtn.innerText = 'ลงประกาศทันที';
+            submitBtn.disabled = false;
+            loadListings(); // รีเฟรชข้อมูลใหม่ทันที
+        }).catch(error => {
+            alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+            submitBtn.innerText = 'ลงประกาศทันที';
+            submitBtn.disabled = false;
         });
-    </script>
+    });
+
+    // สั่งให้โหลดข้อมูลประกาศทันทีที่เปิดเว็บไซต์
+    window.onload = loadListings;
+</script>
 </body>
 </html>
