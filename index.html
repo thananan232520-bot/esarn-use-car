@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เว็บประกาศขายรถยนต์และมอเตอร์ไซค์มือสอง</title>
+    
+    <!-- Google tag (gtag.js) สำหรับเก็บสถิติผู้เข้าชมเว็บไซต์ -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ3157GJM8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VZ3157GJM8'); // นำรหัสของคุณมาใส่แทน G-XXXXXXXXXX
+    </script>
+
     <style>
         body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
         header { background: #222; color: #fff; padding: 20px; text-align: center; }
@@ -17,6 +27,11 @@
             100% { box-shadow: 0 0 20px rgba(34, 139, 34, 0.8); }
         }
 
+        .search-bar { max-width: 1160px; margin: 20px auto; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        .search-bar input, .search-bar select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; min-width: 200px; font-size: 15px; }
+        .search-bar button { background: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; padding: 10px 25px; border-radius: 4px; flex-grow: 0; width: auto; margin-top: 0; }
+        .search-bar button:hover { background: #0056b3; }
+
         .container { display: flex; flex-wrap: wrap; padding: 10px; justify-content: center; max-width: 1200px; margin: 0 auto; }
         .card { background: #fff; border: 1px solid #ddd; margin: 10px; padding: 15px; width: 320px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
         
@@ -28,11 +43,12 @@
         .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; }
         
         .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
-        input[type="text"], input[type="number"], select, textarea, input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .form-container input[type="text"], .form-container input[type="number"], .form-container select, .form-container textarea, .form-container input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
         textarea { resize: vertical; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
-        button:hover { background: #218838; }
-        button:disabled { background: #6c757d; cursor: not-allowed; }
+        .form-container button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
+        .form-container button:hover { background: #218838; }
+        .form-container button:disabled { background: #6c757d; cursor: not-allowed; }
+        
         .legal-text { font-size: 12px; color: #555; background: #f9f9f9; padding: 10px; margin: 10px 0; border: 1px solid #eee; }
         .checkbox-container { display: flex; align-items: flex-start; margin-top: 10px; font-size: 13px; }
         .checkbox-container input { margin-right: 10px; margin-top: 2px; }
@@ -50,6 +66,28 @@
             <img src="cover-banner.jpg" alt="ซื้อขายรถมือสองครบวงจร รับประเมินราคาฟรี">
         </a>
     </div>
+
+    <!-- ส่วนระบบค้นหาและตัวกรอง -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="ค้นหายี่ห้อ, รุ่น, คำอธิบาย..." onkeyup="if(event.keyCode === 13) applyFilters()">
+        <select id="filterType" onchange="applyFilters()">
+            <option value="all">ทุกประเภท</option>
+            <option value="รถยนต์">รถยนต์</option>
+            <option value="มอเตอร์ไซค์">มอเตอร์ไซค์</option>
+        </select>
+        <select id="sortOption" onchange="applyFilters()">
+            <option value="newest">ลงประกาศล่าสุด</option>
+            <option value="price_asc">ราคา: ต่ำไปสูง</option>
+            <option value="price_desc">ราคา: สูงไปต่ำ</option>
+        </select>
+        <button onclick="applyFilters()">ค้นหา</button>
+    </div>
+
+    <div class="container" id="listings">
+        <p style="text-align: center; width: 100%;">กำลังโหลดข้อมูลประกาศ...</p>
+    </div>
+
+    <div id="pagination" style="text-align: center; margin: 20px auto; width: 100%;"></div>
 
     <div class="form-container">
         <h3>ลงประกาศขายฟรี</h3>
@@ -80,12 +118,6 @@
             <button type="submit">ลงประกาศทันที</button>
         </form>
     </div>
-
-    <div class="container" id="listings">
-        <p style="text-align: center; width: 100%;">กำลังโหลดข้อมูลประกาศ...</p>
-    </div>
-
-    <div id="pagination" style="text-align: center; margin: 20px auto; width: 100%;"></div>
 
     <footer>
         <div style="margin-bottom: 15px;">
@@ -119,6 +151,7 @@
         setInterval(updateClock, 1000); updateClock();
 
         let allListings = [];
+        let filteredListings = [];
         const itemsPerPage = 10;
         let currentPage = 1;
 
@@ -127,13 +160,40 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.status === 'success') {
-                        allListings = data.data.reverse();
-                        renderPage(1);
+                        allListings = data.data;
+                        applyFilters(); // ดึงข้อมูลเสร็จแล้วสั่งให้ผ่านตัวกรองเพื่อจัดเรียงและแสดงผล
                     }
                 })
                 .catch(error => {
                     document.getElementById('listings').innerHTML = '<p style="color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาตรวจสอบ URL หรือสิทธิ์การเข้าถึง Apps Script</p>';
                 });
+        }
+
+        function applyFilters() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filterType = document.getElementById('filterType').value;
+            const sortOption = document.getElementById('sortOption').value;
+
+            filteredListings = allListings.filter(item => {
+                const titleMatch = item.title && item.title.toLowerCase().includes(searchText);
+                const descMatch = item.description && item.description.toLowerCase().includes(searchText);
+                const textMatch = titleMatch || descMatch;
+                
+                const typeMatch = filterType === 'all' || item.type === filterType;
+                
+                return textMatch && typeMatch;
+            });
+
+            if (sortOption === 'price_asc') {
+                filteredListings.sort((a, b) => Number(a.price) - Number(b.price));
+            } else if (sortOption === 'price_desc') {
+                filteredListings.sort((a, b) => Number(b.price) - Number(a.price));
+            } else {
+                // newest
+                filteredListings.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            renderPage(1);
         }
 
         function renderPage(page) {
@@ -143,10 +203,11 @@
             
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            const pageItems = allListings.slice(start, end);
+            const pageItems = filteredListings.slice(start, end);
             
             if(pageItems.length === 0) {
-                listingsDiv.innerHTML = '<p>ยังไม่มีประกาศในขณะนี้</p>';
+                listingsDiv.innerHTML = '<p>ไม่พบประกาศที่ตรงกับการค้นหา</p>';
+                renderPaginationControls();
                 return;
             }
 
@@ -205,7 +266,7 @@
         }
         
         function renderPaginationControls() {
-            const totalPages = Math.ceil(allListings.length / itemsPerPage);
+            const totalPages = Math.ceil(filteredListings.length / itemsPerPage);
             const paginationDiv = document.getElementById('pagination');
             paginationDiv.innerHTML = '';
             
@@ -222,7 +283,6 @@
             }
         }
 
-        // ฟังก์ชันบีบอัดรูปภาพด้วย HTML5 Canvas
         const compressImage = (file) => {
             return new Promise((resolve) => {
                 const reader = new FileReader();
