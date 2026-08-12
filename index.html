@@ -97,10 +97,8 @@
     </footer>
 
     <script>
-        // ใส่ URL ที่ได้จาก Google Apps Script อันใหม่ตรงนี้
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbwoZZ0loPXb6lzzuDfaRlJB-2daZlxz4SMXeKMV8d390pvozQ8ZijxZ4Dw4O4zScXjchQ/exec';
         
-        // ชุดข้อมูลแบนเนอร์ มีการแทรก cover-banner.jpg ไว้ในตำแหน่งแรกของ Array
         const sponsorBanners = [
             { img: "cover-banner.jpg", link: "https://line.me/ti/p/~0980291997" },
             { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+2", link: "#" },
@@ -159,8 +157,18 @@
                 if(item.images) {
                     const urls = item.images.split(',');
                     urls.forEach(url => {
-                        if(url.trim() !== '') {
-                            imgHtml += `<a href="${url}" target="_blank"><img src="${url}" alt="รถมือสอง"></a>`;
+                        const cleanUrl = url.trim();
+                        if(cleanUrl !== '') {
+                            // ดึงรหัส File ID ออกจากลิงก์ Google Drive
+                            const match = cleanUrl.match(/[-\w]{25,}/);
+                            if (match) {
+                                const fileId = match[0];
+                                // แปลงเป็นลิงก์ภาพขนาดย่อเพื่อบังคับให้เว็บแสดงผลได้
+                                const displayUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${displayUrl}" alt="รถมือสอง"></a>`;
+                            } else {
+                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${cleanUrl}" alt="รถมือสอง"></a>`;
+                            }
                         }
                     });
                 }
