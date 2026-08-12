@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เว็บประกาศขายรถยนต์และมอเตอร์ไซค์มือสอง</title>
+    <title>ลงประกาศขายรถมือสองฟรี อีสานใต้ และ ทั่วไทย | ศูนย์รวมรถบ้าน รถเต็นท์ โคราช อุบล ศรีสะเกษ</title>
+    <link rel="canonical" href="https://thananan232520.github.io/" />
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ3157GJM8"></script>
     <script>
@@ -20,6 +21,12 @@
         header { background: #222; color: #fff; padding: 20px; text-align: center; }
         #clock { font-size: 14px; margin-top: 10px; color: #aaa; }
         
+        .nav-provinces { max-width: 1160px; margin: 20px auto; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); text-align: center; }
+        .nav-provinces h3 { margin-top: 0; color: #007bff; }
+        .nav-provinces ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .nav-provinces a { text-decoration: none; color: #333; font-weight: bold; padding: 8px 15px; border: 1px solid #007bff; border-radius: 20px; transition: 0.3s; font-size: 14px; }
+        .nav-provinces a:hover { background: #007bff; color: #fff; }
+
         .animated-banner { max-width: 1160px; width: 95%; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: pulse-glow 2s infinite alternate; transition: transform 0.3s ease; }
         .animated-banner:hover { transform: scale(1.02); }
         .animated-banner img { width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; }
@@ -59,9 +66,23 @@
 </head>
 <body>
     <header>
-        <h1>ศูนย์รวมรถมือสอง ซื้อง่ายขายคล่อง</h1>
+        <h1>ศูนย์รวมรถมือสองอีสานใต้ ลงประกาศฟรี</h1>
         <div id="clock">กำลังโหลดเวลา...</div>
     </header>
+
+    <nav class="nav-provinces">
+        <h3>ค้นหารถมือสองตามจังหวัด</h3>
+        <ul>
+            <li><a href="korat.html">นครราชสีมา</a></li>
+            <li><a href="ubon.html">อุบลราชธานี</a></li>
+            <li><a href="buriram.html">บุรีรัมย์</a></li>
+            <li><a href="surin.html">สุรินทร์</a></li>
+            <li><a href="sisaket.html">ศรีสะเกษ</a></li>
+            <li><a href="chaiyaphum.html">ชัยภูมิ</a></li>
+            <li><a href="yasothon.html">ยโสธร</a></li>
+            <li><a href="amnatcharoen.html">อำนาจเจริญ</a></li>
+        </ul>
+    </nav>
 
     <div class="animated-banner" id="banner-top">
         <a href="https://line.me/ti/p/~0980291997" target="_blank">
@@ -132,10 +153,7 @@
     </footer>
 
     <script>
-        // ใส่ลิงก์ที่ได้จากการ Deploy Google Apps Script
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbyBb5RCfwzHI0lEMeROejt7-tLoBgVmGhjaIabIv27ZACsvUPNklTV3IbFE3y2_DCsXZg/exec';
-        
-        // ใส่ข้อมูลการเชื่อมต่อ Supabase
         const { createClient } = supabase;
         const supabaseUrl = 'https://snuawdnyntiyxarplfob.supabase.co'; 
         const supabaseKey = 'sb_publishable_9hc-n3Db1-joFUXc9oEilA_lYLvZ6FC'; 
@@ -170,52 +188,35 @@
             });
         }
 
-        // ฟังก์ชันใหม่: ดึงข้อมูลจาก 2 แหล่งแล้วนำมาผสานกัน
         async function loadListings() {
             let supabaseData = [];
             let sheetsData = [];
 
-            // 1. ดึงข้อมูลประกาศใหม่จาก Supabase
             try {
                 const { data, error } = await supabaseClient
                     .from('cars')
                     .select('*')
                     .order('date', { ascending: false });
-                
-                if (!error && data) {
-                    supabaseData = data;
-                }
-            } catch (err) {
-                console.warn('โหลด Supabase ไม่สำเร็จ:', err);
-            }
+                if (!error && data) supabaseData = data;
+            } catch (err) { console.warn('Supabase error:', err); }
 
-            // 2. ดึงข้อมูลประกาศเก่าจาก Google Sheets
             try {
                 const noCacheUrl = scriptUrl + '?t=' + new Date().getTime();
                 const response = await fetch(noCacheUrl);
                 const result = await response.json();
-                if(result.status === 'success') {
-                    sheetsData = result.data;
-                }
-            } catch (error) {
-                console.warn('โหลด Google Sheets ไม่สำเร็จ:', error);
-            }
+                if(result.status === 'success') sheetsData = result.data;
+            } catch (error) { console.warn('Sheets error:', error); }
 
-            // 3. นำข้อมูลทั้ง 2 แหล่งมารวมกัน และกรองตัวที่ซ้ำออก
             let combinedData = [...supabaseData, ...sheetsData];
             let uniqueMap = new Map();
-            
             combinedData.forEach(item => {
                 let key = item.title + "_" + item.date;
-                if(!uniqueMap.has(key)) {
-                    uniqueMap.set(key, item);
-                }
+                if(!uniqueMap.has(key)) uniqueMap.set(key, item);
             });
 
             allListings = Array.from(uniqueMap.values());
-            
             if (allListings.length === 0) {
-                document.getElementById('listings').innerHTML = '<p style="color: red;">ไม่พบข้อมูลประกาศ</p>';
+                document.getElementById('listings').innerHTML = '<p style="text-align: center;">ไม่พบข้อมูลประกาศ</p>';
             } else {
                 applyFilters();
             }
@@ -245,7 +246,6 @@
                     return dateB - dateA;
                 });
             }
-
             renderPage(1);
         }
 
@@ -351,13 +351,11 @@
                         const MAX_HEIGHT = 800;
                         let width = img.width;
                         let height = img.height;
-
                         if (width > height) {
                             if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                         } else {
                             if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
                         }
-                        
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
@@ -370,33 +368,25 @@
 
         document.getElementById('postForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            if (!document.getElementById('pdpa').checked) { alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัว'); return; }
-
+            if (!document.getElementById('pdpa').checked) { alert('กรุณายอมรับเงื่อนไข'); return; }
             const titleStr = document.getElementById('title').value.trim();
             if (titleStr.length < 5) { alert('กรุณากรอกยี่ห้อและรุ่นให้ชัดเจน'); return; }
-
             const priceVal = parseInt(document.getElementById('price').value);
             if (isNaN(priceVal) || priceVal <= 0) { alert('กรุณากรอกราคาให้ถูกต้อง'); return; }
-
             const contactStr = document.getElementById('contact').value.trim();
             if (!/^[0-9]{9,10}$/.test(contactStr)) { alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง'); return; }
 
             const submitBtn = this.querySelector('button[type="submit"]');
-            const fileInput = document.getElementById('images');
-            const files = fileInput.files;
+            const files = document.getElementById('images').files;
+            if (files.length > 20) { alert('อัปโหลดรูปภาพได้สูงสุด 20 รูป'); return; }
 
-            if (files.length > 20) { alert('อัปโหลดรูปภาพได้สูงสุด 20 รูปเท่านั้นครับ'); return; }
-
-            submitBtn.innerText = 'กำลังประมวลผลและอัปโหลด... (ห้ามปิดหน้านี้)'; 
+            submitBtn.innerText = 'กำลังอัปโหลด...'; 
             submitBtn.disabled = true;
 
             let imageArray = [];
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    const compressedBase64 = await compressImage(files[i]);
-                    imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: compressedBase64 });
-                }
+            for (let i = 0; i < files.length; i++) {
+                const base64 = await compressImage(files[i]);
+                imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: base64 });
             }
 
             const formData = {
@@ -412,16 +402,14 @@
                 method: 'POST', 
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(formData)
-            }).then(response => {
-                if (!response.ok) throw new Error('Network error');
-                alert('ลงประกาศพร้อมรูปภาพเรียบร้อยแล้วครับ');
+            }).then(() => {
+                alert('ลงประกาศเรียบร้อยแล้วครับ');
                 document.getElementById('postForm').reset();
                 submitBtn.innerText = 'ลงประกาศทันที'; 
                 submitBtn.disabled = false;
                 loadListings();
-            }).catch(error => {
-                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
-                submitBtn.innerText = 'ลงประกาศทันที'; 
+            }).catch(() => {
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่');
                 submitBtn.disabled = false;
             });
         });      
