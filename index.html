@@ -156,16 +156,18 @@
         let currentPage = 1;
 
         function loadListings() {
-            fetch(scriptUrl)
+            const noCacheUrl = scriptUrl + '?t=' + new Date().getTime();
+            
+            fetch(noCacheUrl)
                 .then(response => response.json())
                 .then(data => {
                     if(data.status === 'success') {
                         allListings = data.data;
-                        applyFilters(); // ดึงข้อมูลเสร็จแล้วสั่งให้ผ่านตัวกรองเพื่อจัดเรียงและแสดงผล
+                        applyFilters(); 
                     }
                 })
                 .catch(error => {
-                    document.getElementById('listings').innerHTML = '<p style="color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาตรวจสอบ URL หรือสิทธิ์การเข้าถึง Apps Script</p>';
+                    document.getElementById('listings').innerHTML = '<p style="color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
                 });
         }
 
@@ -323,8 +325,28 @@
 
         document.getElementById('postForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             if (!document.getElementById('pdpa').checked) {
-                alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัว'); return;
+                alert('กรุณายอมรับเงื่อนไขและนโยบายความเป็นส่วนตัว'); 
+                return;
+            }
+
+            const titleStr = document.getElementById('title').value.trim();
+            if (titleStr.length < 5) {
+                alert('กรุณากรอกยี่ห้อและรุ่นให้ชัดเจน (อย่างน้อย 5 ตัวอักษร)');
+                return;
+            }
+
+            const priceVal = parseInt(document.getElementById('price').value);
+            if (isNaN(priceVal) || priceVal <= 0) {
+                alert('กรุณากรอกราคาให้ถูกต้อง (ต้องมากกว่า 0 บาท)');
+                return;
+            }
+
+            const contactStr = document.getElementById('contact').value.trim();
+            if (!/^[0-9]{9,10}$/.test(contactStr)) {
+                alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (เป็นตัวเลข 9-10 หลักเท่านั้น)');
+                return;
             }
 
             const submitBtn = this.querySelector('button[type="submit"]');
@@ -335,6 +357,42 @@
                 alert('อัปโหลดรูปภาพได้สูงสุด 20 รูปเท่านั้นครับ');
                 return;
             }
+
+            submitBtn.innerText = 'กำลังประมวลผลและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
+            submitBtn.disabled = true;
+
+            let imageArray = [];
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const compressedBase64 = await compressImage(files[i]);
+                    imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: compressedBase64 });
+                }
+            }
+
+            const formData = {
+                type: document.getElementById('type').value,
+                title: titleStr,
+                description: document.getElementById('description').value,
+                price: priceVal,
+                contact: contactStr,
+                images: imageArray
+            };
+
+            fetch(scriptUrl, {
+                method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).then(() => {
+                alert('ลงประกาศพร้อมรูปภาพเรียบร้อยแล้วครับ');
+                document.getElementById('postForm').reset();
+                submitBtn.innerText = 'ลงประกาศทันที'; 
+                submitBtn.disabled = false;
+                loadListings();
+            }).catch(error => {
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+                submitBtn.innerText = 'ลงประกาศทันที'; 
+                submitBtn.disabled = false;
+            });
+        });
 
             submitBtn.innerText = 'กำลังบีบอัดรูปภาพและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
             submitBtn.disabled = true;
