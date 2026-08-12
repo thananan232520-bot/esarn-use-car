@@ -66,7 +66,7 @@
             
             <label style="font-size: 14px; margin-top: 10px; display: block; font-weight: bold;">อัปโหลดรูปรถยนต์ (สูงสุด 20 รูป)</label>
             <input type="file" id="images" accept="image/*" multiple>
-            <div style="font-size: 11px; color: #dc3545;">* แนะนำเพื่อความรวดเร็วในการโหลด ควรเลือกรูปภาพที่จำเป็นไม่เกิน 5 รูป</div>
+            <div style="font-size: 11px; color: #dc3545;">* ระบบจะทำการบีบอัดรูปภาพอัตโนมัติก่อนอัปโหลด แนะนำไม่เกิน 5 รูปเพื่อความรวดเร็วที่สุด</div>
             
             <div class="legal-text">
                 ข้อตกลง: เว็บไซต์เป็นเพียงสื่อกลาง ไม่มีส่วนเกี่ยวข้องกับการทำธุรกรรม โปรดใช้ความระมัดระวัง
@@ -172,7 +172,6 @@
                     });
                 }
                 const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
-
                 const descText = item.description ? item.description.replace(/\n/g, '<br>') : '-';
 
                 const card = `
@@ -223,6 +222,45 @@
             }
         }
 
+        // ฟังก์ชันบีบอัดรูปภาพด้วย HTML5 Canvas
+        const compressImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                        resolve(dataUrl.split(',')[1]);
+                    }
+                };
+            });
+        };
+
         document.getElementById('postForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!document.getElementById('pdpa').checked) {
@@ -238,19 +276,14 @@
                 return;
             }
 
-            submitBtn.innerText = 'กำลังประมวลผลและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
+            submitBtn.innerText = 'กำลังบีบอัดรูปภาพและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
             submitBtn.disabled = true;
 
             let imageArray = [];
             if (files.length > 0) {
                 for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
-                        reader.readAsDataURL(file);
-                    });
-                    imageArray.push({ name: file.name, type: file.type, base64: base64 });
+                    const compressedBase64 = await compressImage(files[i]);
+                    imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: compressedBase64 });
                 }
             }
 
