@@ -19,9 +19,11 @@
         header { background: #222; color: #fff; padding: 20px; text-align: center; }
         #clock { font-size: 14px; margin-top: 10px; color: #aaa; }
         
-        .animated-banner { max-width: 800px; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: pulse-glow 2s infinite alternate; transition: transform 0.3s ease; }
+        /* ปรับปรุงขนาดแบนเนอร์หลักให้มีความกว้างสัมพันธ์กับหน้าเว็บและ Responsive */
+        .animated-banner { max-width: 1160px; width: 95%; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: pulse-glow 2s infinite alternate; transition: transform 0.3s ease; }
         .animated-banner:hover { transform: scale(1.02); }
-        .animated-banner img { width: 100%; height: auto; display: block; }
+        .animated-banner img { width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; }
+        
         @keyframes pulse-glow {
             0% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
             100% { box-shadow: 0 0 20px rgba(34, 139, 34, 0.8); }
@@ -38,9 +40,10 @@
         .image-gallery { display: flex; overflow-x: auto; gap: 5px; margin-bottom: 10px; padding-bottom: 5px; }
         .image-gallery img { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
         
-        .dynamic-banner { width: 100%; text-align: center; margin: 15px 10px; background: #fff; border: 1px solid #e0e0e0; padding: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
-        .dynamic-banner img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-        .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; }
+        /* ปรับปรุงแบนเนอร์สปอนเซอร์ให้รองรับขนาดมาตรฐาน เช่น 728x90 */
+        .dynamic-banner { width: 95%; max-width: 1160px; text-align: center; margin: 15px auto; background: #fff; border: 1px solid #e0e0e0; padding: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); box-sizing: border-box; }
+        .dynamic-banner img { width: 100%; max-width: 728px; height: auto; display: block; margin: 0 auto; object-fit: contain; }
+        .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; max-width: 728px; margin-left: auto; margin-right: auto; }
         
         .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
         .form-container input[type="text"], .form-container input[type="number"], .form-container select, .form-container textarea, .form-container input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
@@ -155,7 +158,6 @@
         const itemsPerPage = 10;
         let currentPage = 1;
 
-        // เพิ่มฟังก์ชันสำหรับทำ Data Sanitization ป้องกันช่องโหว่ XSS
         function escapeHTML(str) {
             if (!str) return '';
             return String(str).replace(/[&<>"']/g, function(match) {
@@ -200,7 +202,6 @@
             } else if (sortOption === 'price_desc') {
                 filteredListings.sort((a, b) => Number(b.price) - Number(a.price));
             } else {
-                // newest - แก้บั๊กการเรียงวันที่บน iOS/Safari โดยเปลี่ยนช่องว่างเป็น T
                 filteredListings.sort((a, b) => {
                     const dateA = new Date(String(a.date).replace(' ', 'T'));
                     const dateB = new Date(String(b.date).replace(' ', 'T'));
@@ -227,7 +228,6 @@
             }
 
             pageItems.forEach((item, index) => {
-                // แปลงวันที่อย่างปลอดภัยสำหรับทุกเบราว์เซอร์
                 const safeDateStr = String(item.date).replace(' ', 'T');
                 const dateObj = new Date(safeDateStr);
                 const dateStr = dateObj.toLocaleDateString('th-TH');
@@ -251,7 +251,6 @@
                 }
                 const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
                 
-                // ใช้ Data Sanitization ผ่านฟังก์ชัน escapeHTML ก่อนนำไปแสดงผล
                 const safeTitle = escapeHTML(item.title);
                 const safeType = escapeHTML(item.type);
                 const safeContact = escapeHTML(item.contact);
