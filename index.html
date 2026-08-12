@@ -143,7 +143,7 @@
         function updateClock() {
             const clockElement = document.getElementById('clock');
             if (clockElement) {
-                clockElement.innerText = "เวลาปัจจุบัน: " + new Date().toLocaleDateString('th-TH', {
+                clockElement.innerText = "เวลาปัจจุบัน: " + new Date().toLocaleString('th-TH', {
                     timeZone: 'Asia/Bangkok', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
                 });
             }
@@ -392,43 +392,7 @@
                 submitBtn.innerText = 'ลงประกาศทันที'; 
                 submitBtn.disabled = false;
             });
-        });
-
-            submitBtn.innerText = 'กำลังบีบอัดรูปภาพและบันทึกข้อมูล... (ห้ามปิดหน้านี้)'; 
-            submitBtn.disabled = true;
-
-            let imageArray = [];
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    const compressedBase64 = await compressImage(files[i]);
-                    imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: compressedBase64 });
-                }
-            }
-
-            const formData = {
-                type: document.getElementById('type').value,
-                title: document.getElementById('title').value,
-                description: document.getElementById('description').value,
-                price: document.getElementById('price').value,
-                contact: document.getElementById('contact').value,
-                images: imageArray
-            };
-
-            fetch(scriptUrl, {
-                method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            }).then(() => {
-                alert('ลงประกาศพร้อมรูปภาพเรียบร้อยแล้วครับ');
-                document.getElementById('postForm').reset();
-                submitBtn.innerText = 'ลงประกาศทันที'; 
-                submitBtn.disabled = false;
-                loadListings();
-            }).catch(error => {
-                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
-                submitBtn.innerText = 'ลงประกาศทันที'; 
-                submitBtn.disabled = false;
-            });
-        });
+        });      
 
         window.onload = loadListings;
     </script>
