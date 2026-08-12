@@ -28,7 +28,8 @@
         .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; }
         
         .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
-        input[type="text"], input[type="number"], select, input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="text"], input[type="number"], select, textarea, input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        textarea { resize: vertical; }
         button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
         button:hover { background: #218838; }
         button:disabled { background: #6c757d; cursor: not-allowed; }
@@ -59,12 +60,13 @@
                 <option value="มอเตอร์ไซค์">มอเตอร์ไซค์</option>
             </select>
             <input type="text" id="title" placeholder="ยี่ห้อ / รุ่น / ปี (เช่น Honda Civic 1.8 EL ปี 2019)" required>
+            <textarea id="description" placeholder="คำอธิบายเพิ่มเติมเกี่ยวกับตัวรถ (เช่น สภาพรถ ประวัติการซ่อมบำรุง)" rows="4" required></textarea>
             <input type="number" id="price" placeholder="ราคา (บาท)" required>
             <input type="text" id="contact" placeholder="เบอร์โทรศัพท์สำหรับติดต่อ" required>
             
-            <label style="font-size: 14px; margin-top: 10px; display: block; font-weight: bold;">อัปโหลดรูปรถยนต์ (สูงสุดไม่เกิน 4 รูป)</label>
+            <label style="font-size: 14px; margin-top: 10px; display: block; font-weight: bold;">อัปโหลดรูปรถยนต์ (สูงสุด 20 รูป)</label>
             <input type="file" id="images" accept="image/*" multiple>
-            <div style="font-size: 11px; color: #dc3545;">* แนะนำให้อัปโหลดเฉพาะรูปที่จำเป็นเพื่อความรวดเร็วในการบันทึกข้อมูล</div>
+            <div style="font-size: 11px; color: #dc3545;">* แนะนำเพื่อความรวดเร็วในการโหลด ควรเลือกรูปภาพที่จำเป็นไม่เกิน 5 รูป</div>
             
             <div class="legal-text">
                 ข้อตกลง: เว็บไซต์เป็นเพียงสื่อกลาง ไม่มีส่วนเกี่ยวข้องกับการทำธุรกรรม โปรดใช้ความระมัดระวัง
@@ -152,34 +154,34 @@
                 const dateObj = new Date(item.date);
                 const dateStr = dateObj.toLocaleDateString('th-TH');
                 
-                // ประมวลผลรูปภาพเพื่อแสดงเป็นแกลเลอรี
                 let imgHtml = '';
                 if(item.images) {
                     const urls = item.images.split(',');
                     urls.forEach(url => {
                         const cleanUrl = url.trim();
                         if(cleanUrl !== '') {
-                            // ดึงรหัส File ID ออกจากลิงก์ Google Drive
                             const match = cleanUrl.match(/[-\w]{25,}/);
                             if (match) {
                                 const fileId = match[0];
-                                // แปลงเป็นลิงก์ภาพขนาดย่อเพื่อบังคับให้เว็บแสดงผลได้
                                 const displayUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
-                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${displayUrl}" alt="รถมือสอง"></a>`;
+                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${displayUrl}" alt="รถมือสอง" loading="lazy"></a>`;
                             } else {
-                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${cleanUrl}" alt="รถมือสอง"></a>`;
+                                imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${cleanUrl}" alt="รถมือสอง" loading="lazy"></a>`;
                             }
                         }
                     });
                 }
                 const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
 
+                const descText = item.description ? item.description.replace(/\n/g, '<br>') : '-';
+
                 const card = `
                     <div class="card">
                         ${galleryHtml}
                         <h3 style="margin-top: 0;">${item.title}</h3>
                         <p style="margin: 5px 0;"><strong>ประเภท:</strong> ${item.type}</p>
-                        <p style="margin: 5px 0; color: #28a745; font-weight: bold; font-size: 18px;">฿${Number(item.price).toLocaleString()}</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>รายละเอียด:</strong><br> ${descText}</p>
+                        <p style="margin: 10px 0; color: #28a745; font-weight: bold; font-size: 18px;">฿${Number(item.price).toLocaleString()}</p>
                         <p style="margin: 5px 0;"><strong>ติดต่อ:</strong> ${item.contact}</p>
                         <p style="font-size: 11px; color: #888; margin-top: 15px; border-top: 1px solid #eee; padding-top: 5px;">ลงประกาศเมื่อ: ${dateStr}</p>
                     </div>
@@ -193,7 +195,7 @@
                         <div class="dynamic-banner">
                             <span>Sponsor</span>
                             <a href="${banner.link}" target="_blank">
-                                <img src="${banner.img}" alt="พื้นที่โฆษณา">
+                                <img src="${banner.img}" alt="พื้นที่โฆษณา" loading="lazy">
                             </a>
                         </div>
                     `;
@@ -255,6 +257,7 @@
             const formData = {
                 type: document.getElementById('type').value,
                 title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
                 price: document.getElementById('price').value,
                 contact: document.getElementById('contact').value,
                 images: imageArray
