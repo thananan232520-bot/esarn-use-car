@@ -155,6 +155,15 @@
         const itemsPerPage = 10;
         let currentPage = 1;
 
+        // เพิ่มฟังก์ชันสำหรับทำ Data Sanitization ป้องกันช่องโหว่ XSS
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function(match) {
+                const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                return escapeMap[match];
+            });
+        }
+
         function loadListings() {
             const noCacheUrl = scriptUrl + '?t=' + new Date().getTime();
             
@@ -191,8 +200,12 @@
             } else if (sortOption === 'price_desc') {
                 filteredListings.sort((a, b) => Number(b.price) - Number(a.price));
             } else {
-                // newest
-                filteredListings.sort((a, b) => new Date(b.date) - new Date(a.date));
+                // newest - แก้บั๊กการเรียงวันที่บน iOS/Safari โดยเปลี่ยนช่องว่างเป็น T
+                filteredListings.sort((a, b) => {
+                    const dateA = new Date(String(a.date).replace(' ', 'T'));
+                    const dateB = new Date(String(b.date).replace(' ', 'T'));
+                    return dateB - dateA;
+                });
             }
 
             renderPage(1);
@@ -214,7 +227,9 @@
             }
 
             pageItems.forEach((item, index) => {
-                const dateObj = new Date(item.date);
+                // แปลงวันที่อย่างปลอดภัยสำหรับทุกเบราว์เซอร์
+                const safeDateStr = String(item.date).replace(' ', 'T');
+                const dateObj = new Date(safeDateStr);
                 const dateStr = dateObj.toLocaleDateString('th-TH');
                 
                 let imgHtml = '';
@@ -235,16 +250,21 @@
                     });
                 }
                 const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
-                const descText = item.description ? item.description.replace(/\n/g, '<br>') : '-';
+                
+                // ใช้ Data Sanitization ผ่านฟังก์ชัน escapeHTML ก่อนนำไปแสดงผล
+                const safeTitle = escapeHTML(item.title);
+                const safeType = escapeHTML(item.type);
+                const safeContact = escapeHTML(item.contact);
+                const descText = item.description ? escapeHTML(item.description).replace(/\n/g, '<br>') : '-';
 
                 const card = `
                     <div class="card">
                         ${galleryHtml}
-                        <h3 style="margin-top: 0;">${item.title}</h3>
-                        <p style="margin: 5px 0;"><strong>ประเภท:</strong> ${item.type}</p>
+                        <h3 style="margin-top: 0;">${safeTitle}</h3>
+                        <p style="margin: 5px 0;"><strong>ประเภท:</strong> ${safeType}</p>
                         <p style="margin: 5px 0; font-size: 14px;"><strong>รายละเอียด:</strong><br> ${descText}</p>
                         <p style="margin: 10px 0; color: #28a745; font-weight: bold; font-size: 18px;">฿${Number(item.price).toLocaleString()}</p>
-                        <p style="margin: 5px 0;"><strong>ติดต่อ:</strong> ${item.contact}</p>
+                        <p style="margin: 5px 0;"><strong>ติดต่อ:</strong> ${safeContact}</p>
                         <p style="font-size: 11px; color: #888; margin-top: 15px; border-top: 1px solid #eee; padding-top: 5px;">ลงประกาศเมื่อ: ${dateStr}</p>
                     </div>
                 `;
@@ -383,7 +403,6 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(formData)
             }).then(response => {
-                // เพิ่มการเช็คว่าเซิร์ฟเวอร์ตอบกลับมาปกติหรือไม่
                 if (!response.ok) throw new Error('Network response was not ok');
                 
                 alert('ลงประกาศพร้อมรูปภาพเรียบร้อยแล้วครับ');
