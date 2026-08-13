@@ -6,7 +6,6 @@
     <title>ลงประกาศขายรถมือสองฟรี อีสานใต้ และ ทั่วไทย | ศูนย์รวมรถบ้าน รถเต็นท์ โคราช อุบล ศรีสะเกษ</title>
     <link rel="canonical" href="https://thananan232520-bot.github.io/" />
     
-    <!-- นำโค้ด HTML Tag จาก Google Search Console มาวางแทนที่ข้อความด้านล่างนี้ -->
     <meta name="google-site-verification" content="ใส่รหัสยืนยันของคุณที่นี่" />
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ3157GJM8"></script>
@@ -40,7 +39,20 @@
         }
 
         .search-bar { max-width: 1160px; margin: 20px auto; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
-        .search-bar input, .search-bar select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; min-width: 200px; font-size: 15px; }
+        
+        input, select, textarea, button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        select {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+            padding-right: 30px;
+        }
+
+        .search-bar input, .search-bar select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; min-width: 200px; font-size: 16px; }
         .search-bar button { background: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; padding: 10px 25px; border-radius: 4px; flex-grow: 0; width: auto; margin-top: 0; }
         .search-bar button:hover { background: #0056b3; }
 
@@ -55,7 +67,7 @@
         .dynamic-banner span { display: block; font-size: 10px; color: #999; margin-bottom: 5px; text-align: right; max-width: 728px; margin-left: auto; margin-right: auto; }
         
         .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
-        .form-container input[type="text"], .form-container input[type="number"], .form-container select, .form-container textarea, .form-container input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .form-container input[type="text"], .form-container input[type="number"], .form-container select, .form-container textarea, .form-container input[type="file"] { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
         textarea { resize: vertical; }
         .form-container button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
         .form-container button:hover { background: #218838; }
@@ -166,8 +178,16 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const mainBanner = document.getElementById('main-banner-img');
-            if(mainBanner) {
-                mainBanner.src = 'cover-banner.jpg?t=' + currentTimestamp;
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            if (mainBanner) {
+                if (/android/i.test(userAgent)) {
+                    mainBanner.src = 'banner-android.jpg?t=' + currentTimestamp;
+                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    mainBanner.src = 'banner-ios.jpg?t=' + currentTimestamp;
+                } else {
+                    mainBanner.src = 'cover-banner.jpg?t=' + currentTimestamp;
+                }
             }
         });
 
@@ -198,6 +218,26 @@
                 const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
                 return escapeMap[match];
             });
+        }
+
+        function parseSafeDate(dateStr) {
+            if (!dateStr) return new Date(0);
+            let d = new Date(dateStr);
+            if (!isNaN(d)) return d;
+            
+            let str = String(dateStr).replace(' ', 'T');
+            d = new Date(str);
+            if (!isNaN(d)) return d;
+            
+            let parts = String(dateStr).split(/[- :T/]/);
+            if (parts.length >= 3) {
+                if (parts[0].length === 4) {
+                    return new Date(parts[0], parts[1]-1, parts[2], parts[3]||0, parts[4]||0, parts[5]||0);
+                } else {
+                    return new Date(parts[2], parts[1]-1, parts[0], parts[3]||0, parts[4]||0, parts[5]||0);
+                }
+            }
+            return new Date(0);
         }
 
         async function loadListings() {
@@ -253,8 +293,8 @@
                 filteredListings.sort((a, b) => Number(b.price) - Number(a.price));
             } else {
                 filteredListings.sort((a, b) => {
-                    const dateA = new Date(String(a.date).replace(' ', 'T'));
-                    const dateB = new Date(String(b.date).replace(' ', 'T'));
+                    const dateA = parseSafeDate(a.date);
+                    const dateB = parseSafeDate(b.date);
                     return dateB - dateA;
                 });
             }
@@ -277,8 +317,7 @@
             }
 
             pageItems.forEach((item, index) => {
-                const safeDateStr = String(item.date).replace(' ', 'T');
-                const dateObj = new Date(safeDateStr);
+                const dateObj = parseSafeDate(item.date);
                 const dateStr = dateObj.toLocaleDateString('th-TH');
                 
                 let imgHtml = '';
@@ -372,7 +411,15 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.7).split(',')[1]);
+                        
+                        const base64Data = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
+                        
+                        // เคลียร์หน่วยความจำเพื่อป้องกันเบราว์เซอร์มือถือค้าง
+                        canvas.width = 0;
+                        canvas.height = 0;
+                        img.src = '';
+                        
+                        resolve(base64Data);
                     }
                 };
             });
