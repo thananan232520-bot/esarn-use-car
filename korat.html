@@ -5,31 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รถมือสอง โคราช นครราชสีมา | ลงประกาศขายฟรี รถบ้าน รถเต็นท์</title>
     <link rel="canonical" href="https://thananan232520-bot.github.io/korat.html" />
+    <meta name="google-site-verification" content="ใส่รหัสยืนยันของคุณที่นี่" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ3157GJM8"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-VZ3157GJM8');</script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
-        header { background: #222; color: #fff; padding: 20px; text-align: center; }
-        #clock { font-size: 14px; margin-top: 10px; color: #aaa; }
-        .nav-provinces { max-width: 1160px; margin: 20px auto; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .nav-provinces h3 { margin-top: 0; color: #007bff; }
-        .nav-provinces ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .nav-provinces a { text-decoration: none; color: #333; font-weight: bold; padding: 8px 15px; border: 1px solid #007bff; border-radius: 20px; transition: 0.3s; font-size: 14px; }
-        .nav-provinces a:hover, .nav-provinces a.active { background: #007bff; color: #fff; }
-        .animated-banner { max-width: 1160px; width: 95%; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .animated-banner img { width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; }
-        .search-bar { max-width: 1160px; margin: 20px auto; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
-        .search-bar input, .search-bar select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; min-width: 200px; font-size: 15px; }
-        .search-bar button { background: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; padding: 10px 25px; border-radius: 4px; }
-        .container { display: flex; flex-wrap: wrap; padding: 10px; justify-content: center; max-width: 1200px; margin: 0 auto; }
-        .card { background: #fff; border: 1px solid #ddd; margin: 10px; padding: 15px; width: 320px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
-        .image-gallery { display: flex; overflow-x: auto; gap: 5px; margin-bottom: 10px; padding-bottom: 5px; }
-        .image-gallery img { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
-        .form-container { margin: 20px auto; width: 90%; max-width: 600px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        .form-container input, .form-container select, .form-container textarea { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        .form-container button { background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; padding: 12px; width: 100%; margin-top: 10px; border-radius: 4px; }
-        footer { background: #222; color: #ccc; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px; }
+        body{font-family:sans-serif;margin:0;padding:0;background-color:#f4f4f9;color:#333;}
+        header{background:#222;color:#fff;padding:20px;text-align:center;}
+        #clock{font-size:14px;margin-top:10px;color:#aaa;}
+        .nav-provinces{max-width:1160px;margin:20px auto;padding:15px;background:#fff;border-radius:8px;box-shadow:2px 2px 5px rgba(0,0,0,0.1);text-align:center;}
+        .nav-provinces h3{margin-top:0;color:#007bff;}
+        .nav-provinces ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+        .nav-provinces a{text-decoration:none;color:#333;font-weight:bold;padding:8px 15px;border:1px solid #007bff;border-radius:20px;transition:0.3s;font-size:14px;}
+        .nav-provinces a:hover, .nav-provinces a.active{background:#007bff;color:#fff;}
+        .animated-banner{max-width:1160px;width:95%;margin:20px auto;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.2);animation:pulse-glow 2s infinite alternate;transition:transform 0.3s ease;}
+        .animated-banner:hover{transform:scale(1.02);}
+        .animated-banner img{width:100%;height:auto;max-height:500px;object-fit:contain;display:block;}
+        @keyframes pulse-glow{0%{box-shadow:0 4px 15px rgba(0,0,0,0.2);}100%{box-shadow:0 0 20px rgba(34,139,34,0.8);}}
+        .search-bar{max-width:1160px;margin:20px auto;padding:15px;background:#fff;border-radius:8px;box-shadow:2px 2px 5px rgba(0,0,0,0.1);display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
+        .search-bar input,.search-bar select{padding:10px;border:1px solid #ccc;border-radius:4px;flex-grow:1;min-width:200px;font-size:15px;}
+        .search-bar button{background:#007bff;color:white;border:none;cursor:pointer;font-size:16px;padding:10px 25px;border-radius:4px;flex-grow:0;width:auto;margin-top:0;}
+        .search-bar button:hover{background:#0056b3;}
+        .container{display:flex;flex-wrap:wrap;padding:10px;justify-content:center;max-width:1200px;margin:0 auto;}
+        .card{background:#fff;border:1px solid #ddd;margin:10px;padding:15px;width:320px;box-shadow:2px 2px 5px rgba(0,0,0,0.1);border-radius:8px;}
+        .image-gallery{display:flex;overflow-x:auto;gap:5px;margin-bottom:10px;padding-bottom:5px;}
+        .image-gallery img{width:100px;height:75px;object-fit:cover;border-radius:4px;border:1px solid #eee;}
+        .dynamic-banner{width:95%;max-width:1160px;text-align:center;margin:15px auto;background:#fff;border:1px solid #e0e0e0;padding:10px;box-shadow:2px 2px 5px rgba(0,0,0,0.05);box-sizing:border-box;}
+        .dynamic-banner img{width:100%;max-width:728px;height:auto;display:block;margin:0 auto;object-fit:contain;}
+        .dynamic-banner span{display:block;font-size:10px;color:#999;margin-bottom:5px;text-align:right;max-width:728px;margin-left:auto;margin-right:auto;}
+        .form-container{margin:20px auto;width:90%;max-width:600px;background:#fff;padding:20px;border:1px solid #ddd;box-shadow:2px 2px 5px rgba(0,0,0,0.1);border-radius:8px;}
+        .form-container input[type="text"],.form-container input[type="number"],.form-container select,.form-container textarea,.form-container input[type="file"]{padding:10px;margin:8px 0;width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:4px;}
+        textarea{resize:vertical;}
+        .form-container button{background:#28a745;color:white;border:none;cursor:pointer;font-size:16px;padding:12px;width:100%;margin-top:10px;border-radius:4px;}
+        .form-container button:hover{background:#218838;}
+        .form-container button:disabled{background:#6c757d;cursor:not-allowed;}
+        .legal-text{font-size:12px;color:#555;background:#f9f9f9;padding:10px;margin:10px 0;border:1px solid #eee;}
+        .checkbox-container{display:flex;align-items:flex-start;margin-top:10px;font-size:13px;}
+        .checkbox-container input{margin-right:10px;margin-top:2px;}
+        footer{background:#222;color:#ccc;text-align:center;padding:20px;margin-top:40px;font-size:14px;}
     </style>
 </head>
 <body>
@@ -50,11 +63,13 @@
             <li><a href="amnatcharoen.html">อำนาจเจริญ</a></li>
         </ul>
     </nav>
-    <div class="animated-banner">
-        <a href="https://line.me/ti/p/~0980291997" target="_blank"><img src="cover-banner.jpg" alt="โฆษณา"></a>
+    <div class="animated-banner" id="banner-top">
+        <a href="https://line.me/ti/p/~0980291997" target="_blank">
+            <img id="main-banner-img" src="cover-banner.jpg" alt="ซื้อขายรถมือสองครบวงจร รับประเมินราคาฟรี">
+        </a>
     </div>
     <div class="search-bar">
-        <input type="text" id="searchInput" value="โคราช" placeholder="ค้นหา..." onkeyup="if(event.keyCode === 13) applyFilters()">
+        <input type="text" id="searchInput" value="โคราช" placeholder="ค้นหายี่ห้อ, รุ่น, คำอธิบาย..." onkeyup="if(event.keyCode === 13) applyFilters()">
         <select id="filterType" onchange="applyFilters()">
             <option value="all">ทุกประเภท</option>
             <option value="รถยนต์">รถยนต์</option>
@@ -67,64 +82,166 @@
         </select>
         <button onclick="applyFilters()">ค้นหา</button>
     </div>
-    <div class="container" id="listings"><p style="text-align: center; width: 100%;">กำลังโหลดข้อมูล...</p></div>
-    <div id="pagination" style="text-align: center; margin: 20px auto;"></div>
+    <div class="container" id="listings">
+        <p style="text-align: center; width: 100%;">กำลังเชื่อมต่อและรวบรวมข้อมูลประกาศ...</p>
+    </div>
+    <div id="pagination" style="text-align: center; margin: 20px auto; width: 100%;"></div>
     <div class="form-container">
         <h3>ลงประกาศขายฟรี (นครราชสีมา)</h3>
         <form id="postForm">
-            <select id="type" required><option value="" disabled selected>เลือกประเภท</option><option value="รถยนต์">รถยนต์</option><option value="มอเตอร์ไซค์">มอเตอร์ไซค์</option></select>
-            <input type="text" id="title" placeholder="ยี่ห้อ / รุ่น / ปี" required>
-            <textarea id="description" placeholder="รายละเอียดเพิ่มเติม" rows="4" required></textarea>
+            <select id="type" required>
+                <option value="" disabled selected>เลือกประเภท</option>
+                <option value="รถยนต์">รถยนต์</option>
+                <option value="มอเตอร์ไซค์">มอเตอร์ไซค์</option>
+            </select>
+            <input type="text" id="title" placeholder="ยี่ห้อ / รุ่น / ปี (เช่น Honda Civic 1.8 EL ปี 2019)" required>
+            <textarea id="description" placeholder="คำอธิบายเพิ่มเติมเกี่ยวกับตัวรถ" rows="4" required></textarea>
             <input type="number" id="price" placeholder="ราคา (บาท)" required>
-            <input type="text" id="contact" placeholder="เบอร์โทรศัพท์ติดต่อ" required>
+            <input type="text" id="contact" placeholder="เบอร์โทรศัพท์สำหรับติดต่อ" required>
+            <label style="font-size: 14px; margin-top: 10px; display: block; font-weight: bold;">อัปโหลดรูปรถยนต์ (สูงสุด 20 รูป)</label>
             <input type="file" id="images" accept="image/*" multiple>
-            <div style="font-size: 11px; color: #dc3545;">* บีบอัดรูปภาพอัตโนมัติ</div>
-            <div style="font-size: 12px; margin: 10px 0;"><input type="checkbox" id="pdpa" required> ยอมรับเงื่อนไขและนโยบายความเป็นส่วนตัว</div>
+            <div style="font-size: 11px; color: #dc3545;">* ระบบจะทำการบีบอัดรูปภาพอัตโนมัติก่อนอัปโหลด</div>
+            <div class="legal-text">ข้อตกลง: เว็บไซต์เป็นเพียงสื่อกลาง ไม่มีส่วนเกี่ยวข้องกับการทำธุรกรรม โปรดใช้ความระมัดระวัง</div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="pdpa" required>
+                <label for="pdpa">ยอมรับข้อตกลงและยินยอมให้แสดงข้อมูลติดต่อต่อสาธารณะ (PDPA)</label>
+            </div>
             <button type="submit">ลงประกาศทันที</button>
         </form>
     </div>
     <footer>
-        โทร: 0980291997 | Line ID: 0980291997
+        <div style="margin-bottom: 15px;"><strong>ติดต่อสอบถาม / เช่าพื้นที่โฆษณา</strong><br>โทร: 0980291997 | Line ID: 0980291997 | อีเมล: thananan232520@gmail.com</div>
+        <div>สถิติผู้เข้าชมเว็บไซต์:<br><img src="https://api.visitorbadge.io/api/visitors?path=thananan232520.github.io&countColor=%2328a745" alt="สถิติผู้เข้าชม"></div>
     </footer>
     <script>
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbyBb5RCfwzHI0lEMeROejt7-tLoBgVmGhjaIabIv27ZACsvUPNklTV3IbFE3y2_DCsXZg/exec';
         const { createClient } = supabase;
         const supabaseClient = createClient('https://snuawdnyntiyxarplfob.supabase.co', 'sb_publishable_9hc-n3Db1-joFUXc9oEilA_lYLvZ6FC');
-        let allListings = [], filteredListings = [], itemsPerPage = 10, currentPage = 1;
-        function updateClock() { document.getElementById('clock').innerText = "เวลาปัจจุบัน: " + new Date().toLocaleString('th-TH'); }
+        const currentTimestamp = new Date().getTime();
+        document.addEventListener("DOMContentLoaded", function() {
+            const mainBanner = document.getElementById('main-banner-img');
+            if(mainBanner) mainBanner.src = 'cover-banner.jpg?t=' + currentTimestamp;
+        });
+        const sponsorBanners = [
+            { img: "cover-banner.jpg?t=" + currentTimestamp, link: "https://line.me/ti/p/~0980291997" },
+            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+2", link: "#" },
+            { img: "https://via.placeholder.com/728x90.png?text=Banner+VIP+3", link: "#" }
+        ];
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            if (clockElement) clockElement.innerText = "เวลาปัจจุบัน: " + new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
         setInterval(updateClock, 1000); updateClock();
+        let allListings = [], filteredListings = [], itemsPerPage = 10, currentPage = 1;
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function(match) {
+                const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }; return escapeMap[match];
+            });
+        }
         async function loadListings() {
-            let sData = [], gData = [];
-            try { const { data } = await supabaseClient.from('cars').select('*').order('date', { ascending: false }); if(data) sData = data; } catch(e){}
-            try { const res = await fetch(scriptUrl + '?t=' + Date.now()); const resJson = await res.json(); if(resJson.status==='success') gData = resJson.data; } catch(e){}
-            let map = new Map(); [...sData, ...gData].forEach(item => map.set(item.title + "_" + item.date, item));
-            allListings = Array.from(map.values()); applyFilters();
+            let supabaseData = [], sheetsData = [];
+            try { const { data, error } = await supabaseClient.from('cars').select('*').order('date', { ascending: false }); if (!error && data) supabaseData = data; } catch (err) {}
+            try { const response = await fetch(scriptUrl + '?t=' + new Date().getTime()); const result = await response.json(); if(result.status === 'success') sheetsData = result.data; } catch (error) {}
+            let combinedData = [...supabaseData, ...sheetsData];
+            let uniqueMap = new Map();
+            combinedData.forEach(item => { let key = item.title + "_" + item.date; if(!uniqueMap.has(key)) uniqueMap.set(key, item); });
+            allListings = Array.from(uniqueMap.values());
+            if (allListings.length === 0) { document.getElementById('listings').innerHTML = '<p style="text-align: center;">ไม่พบข้อมูลประกาศ</p>'; } else { applyFilters(); }
         }
         function applyFilters() {
-            let text = document.getElementById('searchInput').value.toLowerCase();
-            let type = document.getElementById('filterType').value;
-            filteredListings = allListings.filter(i => (i.title?.toLowerCase().includes(text) || i.description?.toLowerCase().includes(text)) && (type === 'all' || i.type === type));
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filterType = document.getElementById('filterType').value;
+            const sortOption = document.getElementById('sortOption').value;
+            filteredListings = allListings.filter(item => {
+                const textMatch = (item.title && item.title.toLowerCase().includes(searchText)) || (item.description && item.description.toLowerCase().includes(searchText));
+                const typeMatch = filterType === 'all' || item.type === filterType;
+                return textMatch && typeMatch;
+            });
+            if (sortOption === 'price_asc') { filteredListings.sort((a, b) => Number(a.price) - Number(b.price)); } 
+            else if (sortOption === 'price_desc') { filteredListings.sort((a, b) => Number(b.price) - Number(a.price)); } 
+            else { filteredListings.sort((a, b) => { return new Date(String(b.date).replace(' ', 'T')) - new Date(String(a.date).replace(' ', 'T')); }); }
             renderPage(1);
         }
         function renderPage(page) {
-            currentPage = page; let div = document.getElementById('listings'); div.innerHTML = '';
-            let items = filteredListings.slice((page-1)*itemsPerPage, page*itemsPerPage);
-            if(items.length === 0) { div.innerHTML = '<p>ไม่พบประกาศ</p>'; return; }
-            items.forEach(i => {
-                div.innerHTML += `<div class="card"><h3>${i.title}</h3><p><strong>ประเภท:</strong> ${i.type}</p><p>${i.description}</p><p style="color: #28a745; font-weight: bold;">฿${Number(i.price).toLocaleString()}</p><p><strong>ติดต่อ:</strong> ${i.contact}</p></div>`;
+            currentPage = page;
+            const listingsDiv = document.getElementById('listings'); listingsDiv.innerHTML = '';
+            const start = (page - 1) * itemsPerPage; const end = start + itemsPerPage; const pageItems = filteredListings.slice(start, end);
+            if(pageItems.length === 0) { listingsDiv.innerHTML = '<p>ไม่พบประกาศที่ตรงกับการค้นหา</p>'; renderPaginationControls(); return; }
+            pageItems.forEach((item, index) => {
+                const dateStr = new Date(String(item.date).replace(' ', 'T')).toLocaleDateString('th-TH');
+                let imgHtml = '';
+                if(item.images) {
+                    item.images.split(',').forEach(url => {
+                        const cleanUrl = url.trim();
+                        if(cleanUrl !== '') {
+                            const match = cleanUrl.match(/[-\w]{25,}/);
+                            const displayUrl = match ? `https://drive.google.com/thumbnail?id=${match[0]}&sz=w800` : cleanUrl;
+                            imgHtml += `<a href="${cleanUrl}" target="_blank"><img src="${displayUrl}" alt="รถมือสอง" loading="lazy"></a>`;
+                        }
+                    });
+                }
+                const galleryHtml = imgHtml !== '' ? `<div class="image-gallery">${imgHtml}</div>` : '';
+                const safeTitle = escapeHTML(item.title); const safeType = escapeHTML(item.type); const safeContact = escapeHTML(item.contact);
+                const descText = item.description ? escapeHTML(item.description).replace(/\n/g, '<br>') : '-';
+                listingsDiv.innerHTML += `
+                    <div class="card">
+                        ${galleryHtml}
+                        <h3 style="margin-top: 0;">${safeTitle}</h3>
+                        <p style="margin: 5px 0;"><strong>ประเภท:</strong> ${safeType}</p>
+                        <p style="margin: 5px 0; font-size: 14px;"><strong>รายละเอียด:</strong><br> ${descText}</p>
+                        <p style="margin: 10px 0; color: #28a745; font-weight: bold; font-size: 18px;">฿${Number(item.price).toLocaleString()}</p>
+                        <p style="margin: 5px 0;"><strong>ติดต่อ:</strong> ${safeContact}</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 15px; border-top: 1px solid #eee; padding-top: 5px;">ลงประกาศเมื่อ: ${dateStr}</p>
+                    </div>
+                `;
+                let bannerIndex = ((page - 1) * itemsPerPage) + index;
+                if(bannerIndex < sponsorBanners.length) {
+                    listingsDiv.innerHTML += `<div class="dynamic-banner"><span>Sponsor</span><a href="${sponsorBanners[bannerIndex].link}" target="_blank"><img src="${sponsorBanners[bannerIndex].img}" alt="พื้นที่โฆษณา" loading="lazy"></a></div>`;
+                }
             });
+            renderPaginationControls();
         }
+        function renderPaginationControls() {
+            const totalPages = Math.ceil(filteredListings.length / itemsPerPage);
+            const paginationDiv = document.getElementById('pagination'); paginationDiv.innerHTML = '';
+            if (totalPages <= 1) return;
+            if (currentPage > 1) paginationDiv.innerHTML += `<button onclick="renderPage(${currentPage - 1})" style="width: auto; display: inline-block; padding: 10px 20px; margin: 0 5px; background: #555;">&laquo; ก่อนหน้า</button>`;
+            paginationDiv.innerHTML += `<span style="margin: 0 15px; font-weight: bold;">หน้า ${currentPage} จาก ${totalPages}</span>`;
+            if (currentPage < totalPages) paginationDiv.innerHTML += `<button onclick="renderPage(${currentPage + 1})" style="width: auto; display: inline-block; padding: 10px 20px; margin: 0 5px; background: #555;">ถัดไป &raquo;</button>`;
+        }
+        const compressImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image(); img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const MAX_HEIGHT = 800;
+                        let width = img.width; let height = img.height;
+                        if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+                        else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height); resolve(canvas.toDataURL('image/jpeg', 0.7).split(',')[1]);
+                    }
+                };
+            });
+        };
         document.getElementById('postForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            let files = document.getElementById('images').files, imageArray = [];
-            for(let f of files) {
-                let reader = new FileReader();
-                await new Promise(r => { reader.onload = (ev) => { imageArray.push({name: f.name, type:'image/jpeg', base64: ev.target.result.split(',')[1]}); r(); }; reader.readAsDataURL(f); });
-            }
-            let data = { type: document.getElementById('type').value, title: document.getElementById('title').value, description: document.getElementById('description').value, price: parseInt(document.getElementById('price').value), contact: document.getElementById('contact').value, images: imageArray };
-            await fetch(scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
-            alert('ลงประกาศสำเร็จ'); location.reload();
-        });
+            if (!document.getElementById('pdpa').checked) { alert('กรุณายอมรับเงื่อนไข'); return; }
+            const titleStr = document.getElementById('title').value.trim(); if (titleStr.length < 5) { alert('กรุณากรอกยี่ห้อและรุ่นให้ชัดเจน'); return; }
+            const priceVal = parseInt(document.getElementById('price').value); if (isNaN(priceVal) || priceVal <= 0) { alert('กรุณากรอกราคาให้ถูกต้อง'); return; }
+            const contactStr = document.getElementById('contact').value.trim(); if (!/^[0-9]{9,10}$/.test(contactStr)) { alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง'); return; }
+            const submitBtn = this.querySelector('button[type="submit"]'); const files = document.getElementById('images').files;
+            if (files.length > 20) { alert('อัปโหลดรูปภาพได้สูงสุด 20 รูป'); return; }
+            submitBtn.innerText = 'กำลังอัปโหลด...'; submitBtn.disabled = true;
+            let imageArray = [];
+            for (let i = 0; i < files.length; i++) { const base64 = await compressImage(files[i]); imageArray.push({ name: files[i].name, type: 'image/jpeg', base64: base64 }); }
+            const formData = { type: document.getElementById('type').value, title: titleStr, description: document.getElementById('description').value, price: priceVal, contact: contactStr, images: imageArray };
+            fetch(scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(formData) }).then(() => {
+                alert('ลงประกาศเรียบร้อยแล้วครับ'); document.getElementById('postForm').reset(); submitBtn.innerText = 'ลงประกาศทันที'; submitBtn.disabled = false; loadListings();
+            }).catch(() => { alert('เกิดข้อผิดพลาด กรุณาลองใหม่'); submitBtn.disabled = false; });
+        });      
         window.onload = loadListings;
     </script>
 </body>
