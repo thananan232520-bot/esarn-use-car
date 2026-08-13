@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://thananan232520.github.io/</loc></url>
-  <url><loc>https://thananan232520.github.io/korat.html</loc></url>
-  <url><loc>https://thananan232520.github.io/ubon.html</loc></url>
-  <url><loc>https://thananan232520.github.io/buriram.html</loc></url>
-  <url><loc>https://thananan232520.github.io/surin.html</loc></url>
-  <url><loc>https://thananan232520.github.io/sisaket.html</loc></url>
-  <url><loc>https://thananan232520.github.io/chaiyaphum.html</loc></url>
-  <url><loc>https://thananan232520.github.io/yasothon.html</loc></url>
-  <url><loc>https://thananan232520.github.io/amnatcharoen.html</loc></url>
+  <url>
+    <loc>https://thananan232520-bot.github.io/esarn-use-car/</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thananan232520-bot.github.io/esarn-use-car/index.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
